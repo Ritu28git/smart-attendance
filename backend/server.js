@@ -33,20 +33,24 @@ app.get("/", (req, res) => {
   });
 });
 
+
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, { serverSelectionTimeoutMS: 2000 });
-    console.log('MongoDB Connected Successfully');
+    if (!process.env.MONGO_URI) {
+      throw new Error("MONGO_URI environment variable is missing");
+    }
+
+    await mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 10000,
+    });
+
+    console.log("MongoDB Connected Successfully");
   } catch (err) {
-    console.error('MongoDB connection failed, using in‑memory server:', err.message);
-    const { MongoMemoryServer } = require('mongodb-memory-server');
-    const mongod = await MongoMemoryServer.create();
-    const uri = mongod.getUri();
-    await mongoose.connect(uri);
-    console.log('Connected to in‑memory MongoDB');
-    app.locals.mongod = mongod;
+    console.error("MongoDB connection failed:", err.message);
+    throw err;
   }
 };
+
 
 connectDB().then(() => {
   if (require.main === module) {

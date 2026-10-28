@@ -28,7 +28,7 @@ import {
   MapPin,
 } from "lucide-react";
 
-const API = "http://localhost:5000/api";
+const API = "https://yunify-attendance-backend.netlify.app";
 
 const getToken = () => localStorage.getItem("token");
 
@@ -1010,12 +1010,12 @@ async function addEmployee(event) {
                               {r.photoPath ? (
                                 <button
                                   type="button"
-                                  onClick={() => setSelectedPhoto(`http://localhost:5000${r.photoPath}`)}
+                                  onClick={() => setSelectedPhoto(`https://yunify-attendance-backend.netlify.app/api${r.photoPath}`)}
                                   className="group relative flex h-10 w-10 overflow-hidden rounded-xl border border-indigo-200 shadow-xs transition hover:scale-105"
                                   title="Click to view live selfie"
                                 >
                                   <img
-                                    src={`http://localhost:5000${r.photoPath}`}
+                                    src={`https://yunify-attendance-backend.netlify.app/api${r.photoPath}`}
                                     alt="Live selfie"
                                     className="h-full w-full object-cover"
                                   />

@@ -34,7 +34,7 @@ import {
   MapPin,
 } from "lucide-react";
 
-const API = "https://yunify-attendance-backend.netlify.app";
+const API = "https://yunify-attendance-backend.netlify.app/api";
 function getToken() {
   return localStorage.getItem("token");
 }

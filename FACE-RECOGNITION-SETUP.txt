@@ -1,0 +1,29 @@
+YUNIFY Smart Attendance - Face recognition changes
+
+WHAT CHANGED
+- Admin-only employee registration now requires a live camera face capture.
+- A 128-number face descriptor is stored on the User record (not the raw photo).
+- Check-in/check-out/lunch actions call /api/attendance/verify-face and continue only when the descriptor matches the enrolled descriptor.
+- The old SHA-256 photo-hash flow was not face recognition and has been replaced for verification.
+
+IMPORTANT MODEL FILES REQUIRED
+The source expects these model files under frontend/public/models/ (folder must be created):
+- ssd_mobilenetv1_model-weights_manifest.json and its shard file(s)
+- face_landmark_68_model-weights_manifest.json and its shard file(s)
+- face_recognition_model-weights_manifest.json and its shard file(s)
+Get the matching pretrained model files from the official @vladmandic/face-api model repository/release. Do not rename the shard files unless the JSON manifest references are updated. Without these files, face detection will report a model-loading error.
+
+SETUP
+1. Extract the provided frontend/ and backend/ folders over a BACKUP of your current project.
+2. In a terminal: cd frontend ; npm install
+3. Put the required model files into frontend/public/models/ as described above.
+4. In another terminal: cd backend ; npm install
+5. Start backend and frontend as usual. Open the app on localhost/HTTPS and allow camera access.
+6. Log in as Admin, Add Employee, click Open Camera, then Capture Face, then Save Employee.
+7. Log in as that employee and test verification.
+
+LIMITATIONS / SECURITY
+- This implementation uses face embeddings and a distance threshold (0.52) as an initial value. It must be tested with your camera/users and threshold tuned before real deployment.
+- This is NOT liveness detection; a photo/video replay may still spoof it. Do not use for payroll/security-critical attendance until liveness and abuse protections are added and tested.
+- Existing employee accounts do not automatically have a descriptor; Admin must re-register/enroll them or a separate authorized re-enrollment flow must be built.
+- Model files are not bundled in this zip because this environment could not download external model assets.
